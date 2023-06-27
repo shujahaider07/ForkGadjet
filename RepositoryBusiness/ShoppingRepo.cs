@@ -3,11 +3,6 @@ using Entities;
 using EntitiesViewModels;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RepositoryBusiness
 {
@@ -22,27 +17,29 @@ namespace RepositoryBusiness
         }
 
 
-        public async Task<Shopping> AddShopping(Shopping e)
+        public async Task AddShopping(Shopping e)
         {
             try
             {
+                await _db.Shoppings.AddAsync(new Shopping
+                {
+                    Customer_Id = e.Customer_Id,
+                    date = DateTime.Now,
+                    Order_id = e.Order_id,
 
-                Shopping Shop = new Shopping();
 
-                Shop.Customer_Id = e.Customer_Id;
-                Shop.date = e.date;
+                });
 
+                await _db.SaveChangesAsync();
+              
 
-                var add = _db.Shoppings.Add(Shop);
-                _db.SaveChanges();
             }
             catch (Exception ex)
             {
                 ex.Message.ToString();
             }
 
-            return e;
-
+           
         }
 
         public void deleteShopping(int id)
