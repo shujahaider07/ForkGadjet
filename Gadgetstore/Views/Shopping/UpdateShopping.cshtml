@@ -1,0 +1,40 @@
+﻿@model Entities.Shopping
+
+@{
+    ViewData["Title"] = "UpdateShopping";
+}
+
+<h1>UpdateShopping</h1>
+
+<h4>Shopping</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateShopping">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           @* <div class="form-group">
+                <label asp-for="Order_id" class="control-label"></label>
+                <input asp-for="Order_id" class="form-control" />
+                <span asp-validation-for="Order_id" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Customer_Id" class="control-label"></label>
+                <input asp-for="Customer_Id" class="form-control" />
+                <span asp-validation-for="Customer_Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="date" class="control-label"></label>
+                <input asp-for="date" class="form-control" />
+                <span asp-validation-for="date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ListShopping">Back to List</a>
+</div>
+
