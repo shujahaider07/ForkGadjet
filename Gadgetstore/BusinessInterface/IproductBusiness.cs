@@ -9,7 +9,7 @@ namespace Gadgetstore.BusinessInterface
             Task<IEnumerable<productListVm>> GetAllProductsAsync();
             Task<Products> GetProductByIdAsync(int id);
             Task AddProductAsync(Products product);
-            Task UpdateProductAsync(Products product);
+            Task UpdateProductAsync(Products products);
             Task DeleteProductAsync(int id);
         
 

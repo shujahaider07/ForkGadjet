@@ -7,5 +7,6 @@ namespace EntitiesViewModels
         public int ProductId { get; set; }
         public string? Category_Name { get; set; }
         public string? Product_Name { get; set; }
+        public int? IsDelete { get; set; }
     }
 }

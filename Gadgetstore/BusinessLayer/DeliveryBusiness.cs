@@ -11,13 +11,13 @@ namespace Gadgetstore.BusinessLayer
         public DeliveryBusiness(IDeliveries deliveryRepo)
         {
             this.deliveryRepo = deliveryRepo;
-                
+
         }
-        public void AddDelivery(DeliveryVM deliveryVM)
+        public async Task AddDelivery(DeliveryVM deliveryVM)
         {
             try
             {
-                deliveryRepo.AddDeliveries(deliveryVM);
+                await deliveryRepo.AddDeliveries(deliveryVM);
             }
             catch (Exception)
             {
@@ -26,12 +26,12 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public void DeleteDelivery(int id)
+        public async Task DeleteDelivery(int id)
         {
             try
             {
 
-                deliveryRepo.deleteDeliveries(id);
+                await deliveryRepo.deleteDeliveries(id);
             }
             catch (Exception)
             {
@@ -40,11 +40,11 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public Deliveries DeliveryById(int id)
+        public async Task<Deliveries> DeliveryById(int id)
         {
             try
             {
-              return deliveryRepo.GetIdByDeliveries(id);
+                return await deliveryRepo.GetIdByDeliveries(id);
             }
             catch (Exception)
             {
@@ -53,12 +53,15 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public IEnumerable<Deliveries> GetAllDelivery()
+
+
+
+        public async Task UpdateDelivery(Deliveries delivery)
         {
             try
             {
+                await deliveryRepo.EditDeliveries(delivery);
 
-                return deliveryRepo.ListDeliveries();
             }
             catch (Exception)
             {
@@ -67,25 +70,11 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public IEnumerable<DeliveryVM> GetAllDeliveryVM()
+         async Task<IEnumerable<DeliveryVM>> IDeliveryBusiness.GetAllDeliveryVM()
         {
             try
             {
-                 return deliveryRepo.ListDeliveriesVM();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public void UpdateDelivery(Deliveries delivery)
-        {
-            try
-            {
-                deliveryRepo.EditDeliveries(delivery);
-
+                return await deliveryRepo.ListDeliveriesVM();
             }
             catch (Exception)
             {

@@ -56,11 +56,12 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public async Task UpdateProductAsync(Products product)
+        public async Task UpdateProductAsync(Products products)
         {
             try
             {
-                await _productRepo.Update(product);
+                await _productRepo.Update(products);
+                
             }
             catch (Exception ex)
             {

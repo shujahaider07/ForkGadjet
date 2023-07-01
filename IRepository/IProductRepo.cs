@@ -8,8 +8,8 @@ namespace IRepository
         public Task<IEnumerable<productListVm>> GetAll();
         public Task<Products> GetById(int id);
         public Task Add(Products product);
-        public Task Update(Products product);
-        public Task Delete(int id);
+        public Task Update(Products products);
+        public Task Delete(int id );
 
 
     }

@@ -13,6 +13,7 @@ namespace Entities
         public int ProductId { get; set; }
         public int? Category_Id { get; set; }
         public string? Product_Name{ get; set; }
+        public int? IsDelete{ get; set; }
     
 
 

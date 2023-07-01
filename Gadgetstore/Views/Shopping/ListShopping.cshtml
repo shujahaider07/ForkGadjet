@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entities.Customer>
+﻿@model IEnumerable<EntitiesViewModels.ShoppingVm>
 
 @{
     ViewData["Title"] = "ListShopping";
@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Order_id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.First_Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Age)
+                @Html.DisplayNameFor(model => model.Customer_Id)
             </th>
             <th></th>
         </tr>
@@ -28,13 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.Order_id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.First_Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Age)
+                @Html.DisplayFor(modelItem => item.Customer_Id)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

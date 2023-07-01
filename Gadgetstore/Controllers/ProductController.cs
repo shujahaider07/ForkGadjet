@@ -81,13 +81,13 @@
 
 
             [HttpPost]
-            public async Task<IActionResult> Updateproduct(Products e)
+            public async Task<IActionResult> Updateproduct(Products products)
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        await productbusiness.UpdateProductAsync(e);
+                        await productbusiness.UpdateProductAsync(products);
                     }
                     _notyf.Success("Update Successful", 5);
                     return RedirectToAction("Listproduct");

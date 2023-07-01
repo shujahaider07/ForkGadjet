@@ -17,7 +17,7 @@ namespace RepositoryBusiness
         }
 
 
-        public async Task AddShopping(Shopping e)
+        public async Task AddShopping(ShoppingVm e)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace RepositoryBusiness
                 });
 
                 await _db.SaveChangesAsync();
-              
+
 
             }
             catch (Exception ex)
@@ -39,8 +39,10 @@ namespace RepositoryBusiness
                 ex.Message.ToString();
             }
 
-           
+
         }
+
+      
 
         public void deleteShopping(int id)
         {
@@ -51,21 +53,23 @@ namespace RepositoryBusiness
             }
         }
 
-        public Task<IEnumerable<Shopping>> EditShopping(Shopping e)
+        public async Task EditShopping(Shopping e)
         {
-            var ID = _db.Shoppings.Where(x => x.Order_id == e.Order_id).AsEnumerable().FirstOrDefault();
 
-            if (ID != null)
+            try
             {
-                ID.Customer_Id = e.Customer_Id;
-                ID.date = e.date;
+                var Put = _db.Shoppings.Update(e);
+                await _db.SaveChangesAsync();
 
+            }
+            catch (Exception)
+            {
 
-                _db.Entry(ID).State = EntityState.Modified;
-                _db.SaveChangesAsync();
+                throw;
             }
 
-            return null;
+
+
         }
 
         public async Task<Shopping> GetIdByShopping(int id)
@@ -73,14 +77,37 @@ namespace RepositoryBusiness
             return await _db.Shoppings.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Shopping>> ListShopping()
-        {
-            return _db.Shoppings.ToList();
-        }
-
         public async Task<IEnumerable<ShoppingVm>> ListShoppingVm()
         {
-            return _db.ShoppingVms.FromSqlRaw($"exec sp_bindCustomerNameInShoppingTbl");
+            try
+            {
+                List<ShoppingVm> p1 = await (from d in _db.Shoppings
+                                             join c in _db.Customers on d.Order_id equals c.Id
+                                             select new ShoppingVm
+                                             {
+                                                 First_Name = c.First_Name,
+                                                 Order_id = d.Order_id,
+                                                 date = DateTime.Now,
+
+
+
+                                             }).ToListAsync();
+
+
+                return p1;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        Task IShopping.deleteShopping(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

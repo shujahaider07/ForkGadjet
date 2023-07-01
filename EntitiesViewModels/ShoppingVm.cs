@@ -15,6 +15,7 @@ namespace EntitiesViewModels
 
         [Display(Name = "Customer Name")]
         public string? First_Name { get; set; }
+        public int? Customer_Id { get; set; }
         public DateTime date { get; set; }
     }
 }

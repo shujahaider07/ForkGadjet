@@ -9,7 +9,7 @@ namespace Entities
         public int Order_id { get; set; }
 
         [Display(Name = "Customer Name")]
-        public string? Customer_Id { get; set; }
+        public int? Customer_Id { get; set; }
         public DateTime date { get; set; }
 
     }

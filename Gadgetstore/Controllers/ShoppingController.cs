@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using DbContextForApplicationLayer;
 using Entities;
+using EntitiesViewModels;
 using IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -47,7 +48,7 @@ namespace Gadgetstore.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddShopping(Shopping e)
+        public async Task<IActionResult> AddShopping(ShoppingVm e)
         {
             await _Shopping.AddShopping(e);
             _notyf.Success("Insert Successfull", 5);

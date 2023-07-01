@@ -3,11 +3,13 @@ using Entities;
 using EntitiesViewModels;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace RepositoryBusiness
 {
@@ -24,6 +26,7 @@ namespace RepositoryBusiness
         {
             try
             {
+                product.IsDelete = 0;
                 await _dbContext.product.AddAsync(product);
                 await _dbContext.SaveChangesAsync();
             }
@@ -36,14 +39,23 @@ namespace RepositoryBusiness
             
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id )
         {
+            Products p = new Products();
+
             var product = await _dbContext.product.FindAsync(id);
+
             if (product != null)
             {
-                _dbContext.product.Remove(product);
-               
-               await _dbContext.SaveChangesAsync();
+                p.Category_Id = product.Category_Id;
+                p.ProductId = product.ProductId;
+                p.Product_Name = product.Product_Name;
+                p.IsDelete = product.IsDelete == 0 ? 1 : 1;
+              
+                _dbContext.product.Update(p);
+
+
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -51,16 +63,17 @@ namespace RepositoryBusiness
         {
             try
             {
-                var productList = await(from p in _dbContext.product
-                                        join c in _dbContext.Categories on p.Category_Id equals c.Category_id
-                                        select new productListVm
-                                        {
-                                            ProductId = p.ProductId,
-                                            Product_Name = p.Product_Name,
-                                            Category_Name = c.Category_Name
-                                        }).OrderByDescending(x=>x.ProductId).ToListAsync();
+                var productList = await (from p in _dbContext.product
+                                         join c in _dbContext.Categories on p.Category_Id equals c.Category_id
+                                         select new productListVm
+                                         {
+                                             ProductId = p.ProductId,
+                                             Product_Name = p.Product_Name,
+                                             Category_Name = c.Category_Name,
+                                             IsDelete = p.IsDelete,
+                                         }).OrderByDescending(x => x.ProductId).Where(x=>x.IsDelete == 0 || x.IsDelete == null).ToListAsync();
 
-                return productList;
+                return (IEnumerable<productListVm>)productList;
             }
             catch (Exception ex)
             {
@@ -87,10 +100,31 @@ namespace RepositoryBusiness
 
         public async Task Update(Products product)
         {
+           Products p = new Products();
+          
             try
             {
-                  _dbContext.product.Update(product);
-                 await _dbContext.SaveChangesAsync();
+               var Model =  await _dbContext.product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId);
+
+                p.Product_Name = product.Product_Name;
+                p.ProductId = product.ProductId;
+                p.Category_Id = product.Category_Id;
+
+                if (p != null)
+                {
+                    var id = await _dbContext.product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId);
+
+                    _dbContext.product.Remove(id);
+                    _dbContext.SaveChangesAsync();
+
+                }
+
+
+
+                 _dbContext.product.Update(p);
+                await _dbContext.SaveChangesAsync();
+
+               
             }
             catch (Exception)
             {

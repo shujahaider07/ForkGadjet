@@ -5,12 +5,13 @@ namespace Gadgetstore.BusinessInterface
 {
     public interface IDeliveryBusiness
     {
-        public void AddDelivery(DeliveryVM deliveryVM);
-        public void UpdateDelivery(Deliveries delivery);
-        public void DeleteDelivery(int id);
-        public Deliveries DeliveryById(int id);
-        public IEnumerable<Deliveries> GetAllDelivery ();
-        public IEnumerable<DeliveryVM> GetAllDeliveryVM ();
+        public Task AddDelivery(DeliveryVM deliveryVM);
+        public Task UpdateDelivery(Deliveries delivery);
+        public Task DeleteDelivery(int id);
+        public Task <Deliveries> DeliveryById(int id);
+       
+        public Task <IEnumerable<DeliveryVM>> GetAllDeliveryVM();
+
        
     }
 }

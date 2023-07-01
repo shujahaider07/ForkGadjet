@@ -16,11 +16,11 @@ namespace RepositoryBusiness
             this._db = _db;
         }
 
-        public void AddDeliveries(DeliveryVM deliveryVM)
+        public async Task AddDeliveries(DeliveryVM deliveryVM)
         {
             try
             {
-                _db.Delivery.Add(new Deliveries()
+                await _db.Delivery.AddAsync(new Deliveries()
                 {
 
                     Deliveries_id = deliveryVM.Deliveries_id,
@@ -28,7 +28,7 @@ namespace RepositoryBusiness
                     Date = deliveryVM.Date,
 
                 });
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -37,11 +37,11 @@ namespace RepositoryBusiness
             }
         }
 
-        public void deleteDeliveries(int id)
+        public async Task deleteDeliveries(int id)
         {
             try
             {
-                var del = _db.Delivery.Find(id);
+                var del = await _db.Delivery.FindAsync(id);
                 _db.Delivery.Remove(del);
             }
             catch (Exception)
@@ -51,7 +51,7 @@ namespace RepositoryBusiness
             }
         }
 
-        public void EditDeliveries(Deliveries e)
+        public async Task EditDeliveries(Deliveries e)
         {
             try
             {
@@ -64,12 +64,12 @@ namespace RepositoryBusiness
             }
         }
 
-        public Deliveries GetIdByDeliveries(int id)
+        public async Task<Deliveries> GetIdByDeliveries(int id)
         {
             try
             {
 
-                return _db.Delivery.Find(id);
+                return await _db.Delivery.FindAsync(id);
             }
             catch (Exception)
             {
@@ -78,32 +78,21 @@ namespace RepositoryBusiness
             }
         }
 
-        public IEnumerable<Deliveries> ListDeliveries()
+      
+        public async Task <IEnumerable<DeliveryVM>> ListDeliveriesVM()
         {
             try
             {
-                return _db.Delivery.OrderByDescending(x => x.Customer_id).ToList();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public IEnumerable<DeliveryVM> ListDeliveriesVM()
-        {
-            try
-            {
-                List<DeliveryVM> p1 = (from d in _db.Delivery
-                                          join c in _db.Customers on d.Customer_id equals c.Id
-                                          select new DeliveryVM
-                                          {
-                                              Customer_Name = c.First_Name,
-                                              Deliveries_id = d.Deliveries_id,
+                List<DeliveryVM> p1 = await (from d in _db.Delivery
+                                             join c in _db.Customers on d.Customer_id equals c.Id
+                                             select new DeliveryVM
+                                             {
+                                                 Customer_Name = c.First_Name,
+                                                 Deliveries_id = d.Deliveries_id,
+                                                 Customer_id = d.Customer_id,
 
 
-                                          }).ToList();
+                                             }).ToListAsync();
 
 
                 return p1;
