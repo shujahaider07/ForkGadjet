@@ -32,6 +32,8 @@
             [HttpGet]
             public async Task<IActionResult> Listproduct()
             {
+                _notyf.Information("LIST OF PRODUCTS",1);
+
                 try
                 {
                     var list = await productbusiness.GetAllProductsAsync();
@@ -49,10 +51,13 @@
             [HttpGet]
             public async Task<IActionResult> Addproduct()
             {
+                
                 try
                 {
+                    
                     List<Category> categoriesInproduct = await db.Categories.Select(x => new Category { Category_id = x.Category_id, Category_Name = x.Category_Name }).ToListAsync();
                     ViewBag.Category = new SelectList(categoriesInproduct, "Category_id", "Category_Name");
+                    _notyf.Information("",1);
                     return View();
                 }
                 catch (Exception ex)

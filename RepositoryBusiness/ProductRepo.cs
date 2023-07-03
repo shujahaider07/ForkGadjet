@@ -3,13 +3,6 @@ using Entities;
 using EntitiesViewModels;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace RepositoryBusiness
 {
@@ -36,10 +29,10 @@ namespace RepositoryBusiness
 
                 throw;
             }
-            
+
         }
 
-        public async Task Delete(int id )
+        public async Task Delete(int id)
         {
             Products p = new Products();
 
@@ -51,7 +44,7 @@ namespace RepositoryBusiness
                 p.ProductId = product.ProductId;
                 p.Product_Name = product.Product_Name;
                 p.IsDelete = product.IsDelete == 0 ? 1 : 1;
-              
+
                 _dbContext.product.Update(p);
 
 
@@ -71,10 +64,13 @@ namespace RepositoryBusiness
                                              Product_Name = p.Product_Name,
                                              Category_Name = c.Category_Name,
                                              IsDelete = p.IsDelete,
-                                         }).OrderByDescending(x => x.ProductId).Where(x=>x.IsDelete == 0 || x.IsDelete == null).ToListAsync();
+                                         }).OrderByDescending(x => x.ProductId).Where(x => x.IsDelete == 0 || x.IsDelete == null).ToListAsync();
 
-                return (IEnumerable<productListVm>)productList;
+
+                return (productList);
+
             }
+
             catch (Exception ex)
             {
 
@@ -100,11 +96,11 @@ namespace RepositoryBusiness
 
         public async Task Update(Products product)
         {
-           Products p = new Products();
-          
+            Products p = new Products();
+
             try
             {
-               var Model =  await _dbContext.product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId);
+                var Model = await _dbContext.product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId);
 
                 p.Product_Name = product.Product_Name;
                 p.ProductId = product.ProductId;
@@ -121,17 +117,17 @@ namespace RepositoryBusiness
 
 
 
-                 _dbContext.product.Update(p);
+                _dbContext.product.Update(p);
                 await _dbContext.SaveChangesAsync();
 
-               
+
             }
             catch (Exception)
             {
 
                 throw;
             }
-          
+
         }
 
 
