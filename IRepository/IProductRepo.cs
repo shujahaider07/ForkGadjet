@@ -9,7 +9,7 @@ namespace IRepository
         public Task<Products> GetById(int id);
         public Task Add(Products product);
         public Task Update(Products products);
-        public Task Delete(int id );
+        public Task Delete(int id);
 
 
     }

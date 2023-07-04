@@ -42,7 +42,7 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public async Task< IEnumerable<Customer>> GetAllCustomer()
+        public async Task<IEnumerable<Customer>> GetAllCustomer()
         {
             try
             {

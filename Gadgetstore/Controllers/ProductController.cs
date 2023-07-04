@@ -86,13 +86,13 @@
 
 
             [HttpPost]
-            public async Task<IActionResult> Updateproduct(Products products)
+            public async Task<IActionResult> Updateproduct(Products pro)
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        await productbusiness.UpdateProductAsync(products);
+                        await productbusiness.UpdateProductAsync(pro);
                     }
                     _notyf.Success("Update Successful", 5);
                     return RedirectToAction("Listproduct");
@@ -110,13 +110,13 @@
             {
                 try
                 {
-                    Products model = await productbusiness.GetProductByIdAsync(id);
+                   var a =  await productbusiness.GetProductByIdAsync(id);
 
                     List<Category> categoriesInproduct = db.Categories.Select(x => new Category { Category_id = x.Category_id, Category_Name = x.Category_Name }).AsEnumerable().ToList();
                     ViewBag.Category = new SelectList(categoriesInproduct, "Category_id", "Category_Name");
 
 
-                    return View(model);
+                    return View(a);
                 }
                 catch (Exception ex)
                 {
@@ -149,7 +149,7 @@
                 {
                     if (ModelState.IsValid)
                     {
-                        Products pro = await productbusiness.GetProductByIdAsync(id);
+                        
                         await productbusiness.DeleteProductAsync(id);
                         _notyf.Success("Delete Successful", 5);
                         return RedirectToAction("Listproduct");

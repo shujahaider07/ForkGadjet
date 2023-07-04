@@ -17,11 +17,17 @@ namespace RepositoryBusiness
 
         public async Task Add(Products product)
         {
+            var products = new Products();
+
             try
             {
-                product.IsDelete = 0;
-                await _dbContext.product.AddAsync(product);
-                await _dbContext.SaveChangesAsync();
+                products.Category_Id = product.Category_Id;
+                products.IsDelete = 0;
+                products.Product_Name = product.Product_Name;
+
+                 await _dbContext.product.AddAsync(products);
+
+                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -34,18 +40,13 @@ namespace RepositoryBusiness
 
         public async Task Delete(int id)
         {
-            Products p = new Products();
-
-            var product = await _dbContext.product.FindAsync(id);
-
-            if (product != null)
+            var pro = await _dbContext.product.Where(x => x.ProductId == id).FirstOrDefaultAsync();
+         
+            if (pro != null)
             {
-                p.Category_Id = product.Category_Id;
-                p.ProductId = product.ProductId;
-                p.Product_Name = product.Product_Name;
-                p.IsDelete = product.IsDelete == 0 ? 1 : 1;
+                pro.IsDelete = 1;
 
-                _dbContext.product.Update(p);
+                _dbContext.product.Update(pro);
 
 
                 await _dbContext.SaveChangesAsync();
@@ -94,33 +95,15 @@ namespace RepositoryBusiness
 
         }
 
-        public async Task Update(Products product)
+        public async Task Update(Products productss)
         {
-            Products p = new Products();
-
             try
             {
-                var Model = await _dbContext.product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId);
-
-                p.Product_Name = product.Product_Name;
-                p.ProductId = product.ProductId;
-                p.Category_Id = product.Category_Id;
-
-                if (p != null)
-                {
-                    var id = await _dbContext.product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId);
-
-                    _dbContext.product.Remove(id);
-                    _dbContext.SaveChangesAsync();
-
-                }
-
-
-
-                _dbContext.product.Update(p);
+                productss.IsDelete = 0;
+                _dbContext.product.Update(productss);
                 await _dbContext.SaveChangesAsync();
 
-
+                
             }
             catch (Exception)
             {

@@ -20,6 +20,7 @@ namespace Entities
         public string? contact { get; set; }
         [Display(Name = "Email")]
         public string? Email { get; set; }
+        public int? IsDelete{ get; set; }
 
 
        

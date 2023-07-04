@@ -1,4 +1,5 @@
-﻿using DbContextForApplicationLayer;
+﻿using AspNetCore;
+using DbContextForApplicationLayer;
 using Entities;
 using EntitiesViewModels;
 using IRepository;
@@ -30,6 +31,7 @@ namespace RepositoryBusiness
                         First_Name = customerVM.First_Name,
                         gender = customerVM.gender,
                         Last_Name = customerVM.Last_Name,
+                        IsDelete = 0,
 
                     });
 
@@ -69,8 +71,28 @@ namespace RepositoryBusiness
 
         public async Task DeleteCustomer(int id)
         {
-            var del = _db.Customers.Find(id);
-            _db.Remove(del);
+            
+
+            try
+            {
+                var Customer = await _db.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+                if (Customer != null)
+                {
+                    Customer.IsDelete = 1;
+                    _db.Customers.Update(Customer);
+                    await _db.SaveChangesAsync();
+
+                }
+                
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
 
@@ -81,6 +103,7 @@ namespace RepositoryBusiness
             {
 
                 _db.Customers.Update(customer);
+                customer.IsDelete = 0;
                 await _db.SaveChangesAsync();
             }
             catch (Exception)
@@ -92,7 +115,7 @@ namespace RepositoryBusiness
 
         async Task<IEnumerable<Customer>> ICustomerRepo.GetAllCustomers()
         {
-            return await _db.Customers.OrderByDescending(x => x.Id).ToListAsync();
+            return await _db.Customers.OrderByDescending(x => x.Id).Where(x => x.IsDelete == 0).ToListAsync();
         }
     }
 }

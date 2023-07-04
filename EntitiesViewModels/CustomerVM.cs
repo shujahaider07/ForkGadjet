@@ -20,6 +20,7 @@ namespace EntitiesViewModels
         public string? contact { get; set; }
         [Display(Name = "Email")]
         public string? Email { get; set; }
+        public bool? IsDelete{ get; set; }
 
 
         public Customer vmToEntity(CustomerVM customer)

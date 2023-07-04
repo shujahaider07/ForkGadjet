@@ -3,6 +3,7 @@ using DbContextForApplicationLayer;
 using Entities;
 using EntitiesViewModels;
 using Gadgetstore.BusinessInterface;
+using Gadgetstore.BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -127,8 +128,8 @@ namespace Gadgetstore.Controllers
         {
             try
             {
-                await _CustomerBusiness.DeleteCustomer(id);
-                return View();
+                Customer Csu = await _CustomerBusiness.GetAllCustomerById(id);
+                return View(Csu);
             }
             catch (Exception ex)
             {
@@ -139,14 +140,17 @@ namespace Gadgetstore.Controllers
             }
         }
 
-        [HttpPost, ActionName("Delete")]
-        public async Task<ActionResult> Delete(CustomerVM customer)
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _CustomerBusiness.DeleteCustomer(customer.Id);
+                   Customer c = await _CustomerBusiness.GetAllCustomerById(id);
+
+                    await _CustomerBusiness.DeleteCustomer(id);
+
                     _notyf.Success("Delete Successful", 5);
                 }
             }
