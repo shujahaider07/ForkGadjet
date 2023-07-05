@@ -2,6 +2,7 @@
 using Entities;
 using EntitiesViewModels;
 using IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace RepositoryBusiness
 {
@@ -16,18 +17,19 @@ namespace RepositoryBusiness
             this._db = _db;
         }
 
-        public void AddCategory(CategoryVM e)
+        public async Task AddCategory(CategoryVM e)
         {
             try
             {
-                _db.Categories.Add(new Category
+                await _db.Categories.AddAsync(new Category
                 {
 
                     Category_Name = e.Category_Name,
                     Category_Type = e.Category_Type,
+                    IsDelete = 0
 
-                });
-                _db.SaveChanges();
+                }) ;
+               await _db.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -36,11 +38,20 @@ namespace RepositoryBusiness
             }
         }
 
-        public void deleteCategory(int id)
+        public async Task deleteCategory(int id)
         {
             try
             {
-                 _db.Categories.Find(id);
+
+                var data = await _db.Categories.Where(x => x.Category_id == id).FirstOrDefaultAsync();
+
+                if (data != null)
+                {
+
+                      data.IsDelete = 1;
+                     _db.Categories.Update(data);
+                    await _db.SaveChangesAsync();
+                }
             }
             catch (Exception)
             {
@@ -49,13 +60,23 @@ namespace RepositoryBusiness
             }
         }
 
-        public async Task<Category> EditCategory(Category e)
+        public async Task EditCategory(Category e)
         {
-            Category category = new Category();
+
             try
             {
-               _db.Categories.Update(e);
-                _db.SaveChanges();
+                var data = await _db.Categories.Where(x => x.Category_id == e.Category_id).FirstOrDefaultAsync();
+
+                if (data != null)
+                {
+                    data.Category_id = e.Category_id;
+                    data.Category_Name = e.Category_Name;
+                    data.Category_Type = e.Category_Type;
+                    data.IsDelete = 0;
+                }
+
+                _db.Categories.Update(e);
+                await _db.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -63,14 +84,14 @@ namespace RepositoryBusiness
                 throw;
             }
 
-            return category;
+
         }
 
-        public  Category GetIdByCategory(int id)
+        public Category GetIdByCategory(int id)
         {
             try
             {
-                 return _db.Categories.FirstOrDefault(x => x.Category_id == id);
+                return _db.Categories.FirstOrDefault(x => x.Category_id == id);
             }
             catch (Exception)
             {
@@ -84,14 +105,14 @@ namespace RepositoryBusiness
 
             try
             {
-                return _db.Categories.OrderByDescending(x => x.Category_id).ToList();
+                return _db.Categories.OrderByDescending(x => x.Category_id).Where(x=>x.IsDelete == 0).ToList();
             }
             catch (Exception)
             {
 
                 throw;
             }
-            
+
         }
     }
 }

@@ -6,13 +6,15 @@
 
 <h1>UpdateCategory</h1>
 
-<h4>Category</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
         <form asp-action="UpdateCategory">
+    <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+            <label asp-for="Category_id" class="control-label"></label>
+            <input asp-for="Category_id" class="form-control" />
+            <span asp-validation-for="Category_id" class="text-danger"></span>
+    </div>
             <div class="form-group">
                 <label asp-for="Category_Name" class="control-label"></label>
                 <input asp-for="Category_Name" class="form-control" />

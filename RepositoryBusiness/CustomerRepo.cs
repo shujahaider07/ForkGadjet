@@ -52,9 +52,6 @@ namespace RepositoryBusiness
             }
         }
 
-
-
-
         public async Task<Customer> CustomerGetById(int id)
         {
             try
@@ -94,7 +91,6 @@ namespace RepositoryBusiness
             }
 
         }
-
 
 
         public async Task UpdateCustomer(Customer customer)

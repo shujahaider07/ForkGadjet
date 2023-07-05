@@ -14,11 +14,11 @@ namespace Gadgetstore.BusinessLayer
         {
             this._category = _category;
         }
-        public void AddCategory(CategoryVM categoryvm)
+        public async Task AddCategory(CategoryVM categoryvm)
         {
             try
             {
-                _category.AddCategory(categoryvm);
+              await _category.AddCategory(categoryvm);
             }
             catch (Exception)
             {
@@ -40,11 +40,11 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public void DeleteCategory(int id)
+        public async Task DeleteCategory(int id)
         {
             try
             {
-                _category.deleteCategory(id);
+               await _category.deleteCategory(id);
             }
             catch (Exception)
             {
@@ -66,17 +66,14 @@ namespace Gadgetstore.BusinessLayer
             }
         }
 
-        public async Task<Category> UpdateCategory(Category category)
+        public async Task UpdateCategory(Category category)
         {
-            Category category1 = new Category();
+            
             try
             {
-               var updated = await _category.EditCategory(category);
+              await _category.EditCategory(category);
 
-                if (updated != null)
-                {
-                    category1 = updated;
-                }
+               
             }
             catch (Exception)
             {
@@ -84,7 +81,6 @@ namespace Gadgetstore.BusinessLayer
                 throw;
             }
 
-            return category1;
         }
     }
 }

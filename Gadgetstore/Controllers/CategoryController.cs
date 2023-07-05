@@ -46,7 +46,9 @@ namespace Gadgetstore.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory(CategoryVM e)
         {
-             _categoryBusiness.AddCategory(e);
+            e.IsDelete = 0;
+            _categoryBusiness.AddCategory(e);
+        
             _notyf.Success("Insert Successfull", 5);
             return RedirectToAction("AddCategory");
 
@@ -59,6 +61,7 @@ namespace Gadgetstore.Controllers
         {
             if (ModelState.IsValid)
             {
+                e.IsDelete = 0;
                 await _categoryBusiness.UpdateCategory(e);
 
             }
@@ -91,10 +94,10 @@ namespace Gadgetstore.Controllers
 
             if (ModelState.IsValid)
             {
-                Category pro = _categoryBusiness.CategoryById(id);
-                _categoryBusiness.DeleteCategory(id);
+                //Category pro = _categoryBusiness.CategoryById(id);
+               await _categoryBusiness.DeleteCategory(id);
                 _notyf.Success("Delete Successfull", 5);
-                return RedirectToAction("Listproduct");
+                return RedirectToAction("ListCategory");
             }
             else
             {
@@ -102,7 +105,7 @@ namespace Gadgetstore.Controllers
             }
 
 
-        }
+            }
 
 
 

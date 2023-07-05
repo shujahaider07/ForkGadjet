@@ -14,6 +14,7 @@ namespace Entities
         public int Category_id { get; set; }
         public string? Category_Name  { get; set; }
         public string? Category_Type { get; set; }
+        public int? IsDelete { get; set; }
        
     }
 }
