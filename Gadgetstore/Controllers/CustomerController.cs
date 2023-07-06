@@ -147,7 +147,7 @@ namespace Gadgetstore.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                   Customer c = await _CustomerBusiness.GetAllCustomerById(id);
+                    Customer c = await _CustomerBusiness.GetAllCustomerById(id);
 
                     await _CustomerBusiness.DeleteCustomer(id);
 
